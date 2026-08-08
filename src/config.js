@@ -10,6 +10,9 @@ function optionalDiscordId(environment, name) {
 function loadConfig(environment) {
   const discordToken = environment.DISCORD_TOKEN?.trim();
   if (!discordToken) throw new Error("DISCORD_TOKEN é obrigatório.");
+  if (discordToken.split(".").length !== 3) {
+    throw new Error("DISCORD_TOKEN não possui o formato esperado. Gere um novo token no Discord Developer Portal.");
+  }
   const port = Number(environment.PORT || 3000);
   if (!Number.isInteger(port) || port < 1 || port > 65535) {
     throw new Error("PORT deve ser um número inteiro entre 1 e 65535.");

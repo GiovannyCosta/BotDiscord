@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("dotenv").config({ quiet: true });
 
 const { Client, Collection, Events, GatewayIntentBits } = require("discord.js");
 const { loadConfig } = require("./src/config");
@@ -55,7 +55,14 @@ async function start() {
   process.once("SIGINT", () => shutdown("SIGINT"));
   process.once("SIGTERM", () => shutdown("SIGTERM"));
 
-  await client.login(config.discordToken);
+  try {
+    await client.login(config.discordToken);
+  } catch (error) {
+    // Libera a porta quando o Discord rejeita o login ou a rede está indisponível.
+    healthServer.close();
+    client.destroy();
+    throw error;
+  }
 }
 
 start().catch((error) => {

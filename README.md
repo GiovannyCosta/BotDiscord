@@ -10,7 +10,7 @@ Bot para Discord em Node.js com comandos slash, conexão opcional a canal de voz
 4. Execute `npm start`.
 5. Consulte `GET /health` na porta configurada para verificar a aplicação.
 
-Os comandos disponíveis são `/ola` e `/dados`. Os IDs de canal são opcionais. Se `DISCORD_GUILD_ID` for informado, os comandos são registrados apenas nesse servidor; sem ele, o registro é global.
+Os comandos disponíveis são `/ola`, `/dados` e `/gato`. Os IDs de canal são opcionais. Se `DISCORD_GUILD_ID` for informado, os comandos são registrados apenas nesse servidor; sem ele, o registro é global.
 
 ## Verificação
 
