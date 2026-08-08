@@ -1,16 +1,19 @@
 {
   "name": "discordbot",
   "version": "1.0.0",
+  "description": "Bot Discord com comandos slash, presença em voz e endpoint de saúde.",
   "main": "index.js",
   "scripts": {
-    "ini": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node index.js",
+    "check": "node --check index.js && node --check src/config.js && node --check src/commands.js && node --check src/health-server.js && node --check events/ready.js && node --check commands/dados.js && node --check commands/sayHi.js",
+    "test": "node --test"
   },
-  "keywords": [],
+  "keywords": ["discord", "bot"],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "dependencies": {
     "@discordjs/voice": "^0.19.0",
     "@snazzah/davey": "^0.1.7",

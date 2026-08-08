@@ -3,10 +3,16 @@ services:
     name: discord-bot-giovanny
     env: node
     plan: free
-    buildCommand: npm install
+    buildCommand: npm ci --omit=dev
     startCommand: npm start
     envVars:
       - key: DISCORD_TOKEN
         sync: false
       - key: PORT
         value: 3000
+      - key: DISCORD_GUILD_ID
+        sync: false
+      - key: DISCORD_VOICE_CHANNEL_ID
+        sync: false
+      - key: DISCORD_STATUS_CHANNEL_ID
+        sync: false

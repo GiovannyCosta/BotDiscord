@@ -1,36 +1,24 @@
-#  Discord Voice & Status Bot
+# Discord Voice & Status Bot
 
-![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
-![Discord.js](https://img.shields.io/badge/Discord.js-5865F2?style=for-the-badge&logo=discord&logoColor=white)
+Bot para Discord em Node.js com comandos slash, conexão opcional a canal de voz, aviso de inicialização e endpoint de saúde para hospedagem.
 
-Um bot simples para Discord desenvolvido em Node.js. Este bot entra automaticamente num canal de voz predefinido assim que é iniciado e envia uma mensagem de status "online" num canal de texto específico.
+## Início rápido
 
-## ✨ Funcionalidades
+1. Instale Node.js 20 ou superior.
+2. Execute `npm ci`.
+3. Copie `.env.example` para `.env` e preencha o token e os IDs desejados.
+4. Execute `npm start`.
+5. Consulte `GET /health` na porta configurada para verificar a aplicação.
 
-- **Auto-Join em Canal de Voz:** Conecta-se automaticamente a um canal de voz definido através do seu ID usando a biblioteca `@discordjs/voice`.
-- **Aviso de Status:** Envia automaticamente uma mensagem indicando que está pronto num canal de texto configurado assim que a aplicação arranca.
-- **Modularidade Básica:** Lógica do evento "ready" separada do ficheiro principal (`index.js`), o que ajuda na organização do código e na futura adição de novos comandos ou eventos.
+Os comandos disponíveis são `/ola` e `/dados`. Os IDs de canal são opcionais. Se `DISCORD_GUILD_ID` for informado, os comandos são registrados apenas nesse servidor; sem ele, o registro é global.
 
-## 🚀 Tecnologias e Dependências
-
-O projeto utiliza as seguintes tecnologias:
-
-- [Node.js](https://nodejs.org/)
-- `discord.js`: Para a comunicação base com a API do Discord e gestão de Intents (Guilds, Messages, Voice States, etc.).
-- `@discordjs/voice`: Extensão oficial para gerir a conexão do bot a canais de voz.
-- `dotenv`: Para o carregamento seguro da variável de ambiente com a chave secreta do bot.
-
-## 🛠️ Como Instalar e Configurar
-
-### Pré-requisitos
-
-- Ter o Node.js instalado na máquina.
-- Um Bot criado e configurado no [Discord Developer Portal](https://discord.com/developers/applications) com as intents adequadas ativadas (Message Content, Guild Voice States, Guilds, etc.).
-
-### 1. Preparar as Dependências
-
-Na pasta raiz do projeto, instale as bibliotecas necessárias através do terminal:
+## Verificação
 
 ```bash
-npm install discord.js @discordjs/voice dotenv
+npm run check
+npm test
 ```
+
+A documentação técnica e operacional completa é gerada em `docs/`. Por decisão do projeto, essa pasta está no `.gitignore` e não será enviada ao repositório.
+
+Nunca registre `.env` ou tokens do Discord no Git. Se um token for exposto, redefina-o imediatamente no Discord Developer Portal.

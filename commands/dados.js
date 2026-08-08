@@ -1,26 +1,18 @@
+const { randomInt } = require("node:crypto");
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("dados")
-    .setDescription("Joga dois dados de 6 lados: um para você e um para o bot!"),
+    .setDescription("Joga dois dados de seis lados: um para você e outro para o bot."),
   async execute(interaction) {
-    const dadoUsuario = Math.floor(Math.random() * 6) + 1;
-    const dadoBot = Math.floor(Math.random() * 6) + 1;
-    let mensage = "";
-    let result = "";
-
-    if (dadoUsuario > dadoBot) {
-      mensage = `Voce tirou ${dadoUsuario} e eu tirei ${dadoBot}.`;
-      result = `🏆 **Você ganhou!** Eu tirei ${dadoBot} e você tirou ${dadoUsuario}.`;
-    } else if (dadoBot > dadoUsuario) {
-      result = `💀 **Eu ganhei!** Eu tirei ${dadoBot} e você tirou ${dadoUsuario}. Tente na próxima!`;
-    } else {
-      result = `🤝 **Empate!** Ambos tiramos ${dadoUsuario}.`;
-    }
-
-    await interaction.reply({
-      content: `${mensage}\n${result}`,
-    });
+    // randomInt gera os valores inteiros sem adaptar um número de ponto flutuante.
+    const userRoll = randomInt(1, 7);
+    const botRoll = randomInt(1, 7);
+    let result;
+    if (userRoll > botRoll) result = "Você ganhou.";
+    else if (botRoll > userRoll) result = "Eu ganhei. Tente novamente.";
+    else result = "Empate.";
+    await interaction.reply(`Você tirou ${userRoll} e eu tirei ${botRoll}. ${result}`);
   },
 };

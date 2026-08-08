@@ -1,51 +1,32 @@
-const { joinVoiceChannel, VoiceConnectionStatus, entersState } = require("@discordjs/voice");
+const { joinVoiceChannel, VoiceConnectionStatus } = require("@discordjs/voice");
 
-module.exports = async (client) => {
-  console.log(`Logado com sucesso como ${client.user.tag}!`);
-  console.log(`O bot está online e pronto para uso.`);
-
-  const GUILD_ID = "1244713478397362307";
-
-  // canal de voz
-  const CHANNEL_ID = "1416584575630577728";
-
-  // canal de avisos
-  const ADS_CHANNEL_ID = "1428476081089806346";
-
-  try {
-    const ads_channel = await client.channels.fetch(ADS_CHANNEL_ID);
-    if (ads_channel && ads_channel.isTextBased()) {
-      await ads_channel.send("O bot está online e pronto para uso.");
-    } else {
-      console.log(`Aviso: Não foi possível encontrar o canal de status (ID: ${ADS_CHANNEL_ID}).`);
+module.exports = async (client, config) => {
+  if (config.statusChannelId) {
+    try {
+      const statusChannel = await client.channels.fetch(config.statusChannelId);
+      if (!statusChannel?.isTextBased()) throw new Error("o canal configurado não aceita mensagens");
+      await statusChannel.send("O bot está online e pronto para uso.");
+    } catch (error) {
+      console.error("Não foi possível publicar o status online:", error.message);
     }
-  } catch (error) {
-    console.error('Erro ao tentar enviar a mensagem de status "online":', error);
   }
 
+  if (!config.voiceChannelId) return;
   try {
-    const channel = await client.channels.fetch(CHANNEL_ID);
-
-    if (!channel || !channel.isVoiceBased()) {
-      console.log(`Erro: Canal de voz com ID ${CHANNEL_ID} não encontrado ou não é um canal de voz.`);
-      return;
-    }
+    const channel = await client.channels.fetch(config.voiceChannelId);
+    if (!channel?.isVoiceBased()) throw new Error("o canal configurado não é um canal de voz");
 
     const connection = joinVoiceChannel({
       channelId: channel.id,
       guildId: channel.guild.id,
       adapterCreator: channel.guild.voiceAdapterCreator,
+      selfDeaf: true,
+      selfMute: true,
     });
-
-    connection.on(VoiceConnectionStatus.Ready, () => {
-      console.log(`Conectado com sucesso ao canal de voz: ${channel.name}`);
-    });
-
-    connection.on(VoiceConnectionStatus.Disconnected, async () => {
-      console.log("Bot foi desconectado do canal de voz.");
-    });
+    connection.on(VoiceConnectionStatus.Ready, () => console.log(`Bot conectado ao canal ${channel.name}.`));
+    connection.on(VoiceConnectionStatus.Disconnected, () => console.warn("Bot desconectado do canal de voz."));
+    connection.on("error", (error) => console.error("Erro na conexão de voz:", error.message));
   } catch (error) {
-    console.error(`Erro ao tentar entrar no canal de voz: ${error.message}`);
-    console.error(error);
+    console.error("Não foi possível entrar no canal de voz:", error.message);
   }
 };
